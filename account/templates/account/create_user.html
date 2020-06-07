@@ -1,0 +1,21 @@
+{% extends "account/base.html" %}
+
+{% block content %}
+
+<div class="post_sec">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form_field_div">
+            {% for field in form %}
+            {% if not field.is_hidden %}
+            <div>{{ field.label }}</div>
+            <div>{{ field }}</div>
+            <div>{{ field.errors }}</div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <input type="submit" value="create user">
+    </form>
+</div>
+
+{% endblock content %}

@@ -3,6 +3,9 @@ from django.contrib.auth.models import AbstractUser
 from PIL import Image
 from django.core.mail import send_mail
 from django.http import HttpResponse
+from random import random,shuffle
+import string
+import re
 
 
 # Create your models here.
@@ -27,14 +30,36 @@ class User(AbstractUser):
             img.save(self.image.path)
     
     def __str__(self):
-        return self.username
+        return self.email
 
     def make_admin(self):
         self.is_staff = True
         self.save()
     
     def send_welcome_mail(self):
-        res = send_mail("hello "+self.username, "Welcome to TMS you are admin now.", 'Dont Reply <do_not_reply@domain.com>',[self.email])
+
+        sub = "hello "+self.username
+        body = "Welcome to TMS you are admin now."
+        from_mail = 'Dont Reply <do_not_reply@domain.com>'
+
+        res = send_mail(sub,body,from_mail,[self.email])
+
         return HttpResponse('%s'%res)
 
 
+    def send_login_mail(self,password):
+
+        role = [roles[1] for roles in User.role_type if self.role == roles[0]]
+        link = "http://127.0.0.1:8000/accounts/password_change/"
+        sub = "hello "+self.username
+        body = '''Welcome to TMS you are {} now.
+                
+                  Please login with the below user name and password.after logging in
+                  please change the password.
+                  username:{}
+                  password:{}
+                  please click on the below link to login
+                  {}'''.format(role[0],self.username,password,link)
+        from_mail = 'Dont Reply <do_not_reply@domain.com>'
+        res = send_mail(sub,body,from_mail,[self.email])
+        return HttpResponse('%s'%res)
