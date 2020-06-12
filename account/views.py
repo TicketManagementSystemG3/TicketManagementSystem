@@ -9,6 +9,7 @@ from tms.utils import extract_username,generate_password
 from django.contrib import messages
 
 # Create your views here.
+
 class SignupView(CreateView):
 
     form_class = SignupForm
@@ -43,3 +44,5 @@ class CreateUserView(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
             return render(request, "account/create_user.html", {'form': form})
        
     
+
+

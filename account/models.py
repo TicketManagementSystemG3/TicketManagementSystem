@@ -11,7 +11,7 @@ import re
 # Create your models here.
 class User(AbstractUser):
     role_type = [("AG","agent"),("AD","admin")]
-
+    
     email = models.EmailField(unique=True)
     phone = models.IntegerField(null=True)
     address = models.TextField(blank=True)

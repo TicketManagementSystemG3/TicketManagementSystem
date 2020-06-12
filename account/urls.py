@@ -11,6 +11,7 @@ from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.views import PasswordChangeDoneView
 from account.views import index
 
+
 urlpatterns = [
 
     path("index",index,name="index"),
@@ -32,4 +33,4 @@ urlpatterns = [
     path("create_user",CreateUserView.as_view(),name="create_user"),
     # path('profile/<int:pk>',ProfileView.as_view(),name='profile'),
 
-]
+ ]

@@ -3,7 +3,7 @@ import string
 import re
 
 
-def generate_password(len=6):
+def generate_password(len=5):
     string_char = string.ascii_letters+string.digits+"@#$"
     res = "".join(random.choice(string_char) for i in range(len)) + random.choice(string.ascii_letters) + random.choice(string.digits)+random.choice("@#$")
     res_list = list(res)
