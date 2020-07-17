@@ -1,0 +1,7 @@
+ Hi {{ username }},
+Thank you for signing up into our Ticket Management System.
+We are working towards to make your life easier. So, lets get started!
+I hope you love working here.
+Regards.
+
+ Lorem ipsum dolor sit amet consectetur adipisicing elit. Possimus eum, voluptate quae unde quasi quos, est illo alias quisquam esse cupiditate sed, ullam error qui doloribus veritatis eveniet debitis veniam.

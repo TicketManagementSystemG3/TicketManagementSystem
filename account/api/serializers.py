@@ -48,5 +48,47 @@ class ProfileSerializer(serializers.ModelSerializer):
     
     
      
+class EnableOrDisableUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ["pk","username","email","phone","image","role","status"]
+        read_only_fields = ["pk","username","email","phone","image","role"]
+
+class PasswordChangeSerializer(serializers.Serializer):
+
+    password = serializers.CharField(style={'input_type': 'password'}, write_only=True)
+    password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
+
+    def validate(self,data):
+
+        password = data["password"]
+        password2 = data["password2"]
+
+        if password != password2:
+            raise serializers.ValidationError({"password": "Passwords must match."})
+        
+        return data
+
+    # class Meta:
+    #     model = User
+    #     fields = ['password','password2']
+    
+    # def save(self):
+    #     print(self.__dict__)
+    #     password = self.validated_data['password']
+    #     password2 = self.validated_data['password2']
+    #     user = User.objects.get(username = self.request.get_username)
+
+    #     if password != password2:
+
+    #         raise serializers.ValidationError({"password": "Passwords must match."})
+
+    #     user.set_password(password)
+    #     user.save()
+    #     return user
+
+
+
 
 

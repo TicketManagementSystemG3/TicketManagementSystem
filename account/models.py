@@ -1,22 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from PIL import Image
-from django.core.mail import send_mail
+from django.core.mail import send_mail,EmailMultiAlternatives
 from django.http import HttpResponse
 from random import random,shuffle
 import string
 import re
+from django.template.loader import render_to_string
 
 
 # Create your models here.
 class User(AbstractUser):
     role_type = [("AG","agent"),("AD","admin")]
+    account_status = [("AC","active"),("DS","disable")]
     
     email = models.EmailField(unique=True)
     phone = models.IntegerField(null=True)
     address = models.TextField(blank=True)
     role = models.CharField(max_length=10,blank=True,choices=role_type,default="AD")
     image = models.ImageField(blank=True,default="default.jpg",upload_to="profile/")
+    status = models.CharField(max_length=5,choices=account_status,default="AC")
 
     def save(self,*args,**kwargs):
 
@@ -36,15 +39,29 @@ class User(AbstractUser):
         self.is_staff = True
         self.save()
     
+
     def send_welcome_mail(self):
+        context = {
+        'username': self.username
+        }
 
-        sub = "hello "+self.username
-        body = "Welcome to TMS you are admin now."
-        from_mail = 'Dont Reply <do_not_reply@domain.com>'
+    # render email text
+        email_html_message = render_to_string('account/welcome_mail.html', context)
+        email_plaintext_message = render_to_string('account/welcome_mail.txt', context)
 
-        res = send_mail(sub,body,from_mail,[self.email])
+        msg = EmailMultiAlternatives(
+            # title:
+            "Welcome to {title}".format(title="Ticket Management System"),
+            # message:
+            email_plaintext_message,
+            # from:
+            'Dont Reply <do_not_reply@domain.com>',
+            # to:
+            [self.email]
+        )
+        msg.attach_alternative(email_html_message, "text/html")
+        msg.send()      
 
-        return HttpResponse('%s'%res)
 
 
     def send_login_mail(self,password):
